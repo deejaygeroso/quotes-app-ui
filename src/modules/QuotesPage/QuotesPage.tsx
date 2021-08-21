@@ -18,8 +18,14 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
     setModalVisibility(false)
   }
 
-  const handleOnSave = (): void => {
-    // handle save
+  const handleOnSave = (newSavedQuote: IQuote, isAnUpdateEvent: boolean): void => {
+    if (isAnUpdateEvent) {
+      // Update method here
+    } else {
+      const newListOfQuotes = [newSavedQuote, ...listOfQuotes]
+      setListOfQuotes(newListOfQuotes)
+    }
+    hideModal()
   }
 
   const fetchAllQuotesFromDB = async (): Promise<void> => {

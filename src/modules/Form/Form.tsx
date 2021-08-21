@@ -1,5 +1,6 @@
+import { IQuote, IQuoteSaveResponse } from '../../common/interfaces'
 import React, { ReactElement, useState } from 'react'
-import IQuote from '../../common/interfaces/IQuote'
+import createQuote from '../../api/createQuote'
 
 interface IProps {
   onCancel: () => void
@@ -19,8 +20,19 @@ const Form = (props: IProps): ReactElement => {
     setQuote(event.target.value)
   }
 
+  const clearForm = (): void => {
+    setAuthor('')
+    setQuote('')
+  }
+
   const handleSave = async (): Promise<void> => {
-    // handle save
+    if (author && quote) {
+      const result: IQuoteSaveResponse = await createQuote(author, quote)
+      if (!result.error) {
+        onSave(result, false)
+      }
+      clearForm()
+    }
   }
 
   return (
