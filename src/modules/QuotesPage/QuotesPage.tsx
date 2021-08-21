@@ -1,7 +1,7 @@
 import { IDeleteQuoteResult, IQuote } from '../../common/interfaces'
 import { MdDeleteForever, MdEdit, MdPerson } from 'react-icons/md'
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react'
-import { deleteQuote, getAllQuotes } from '../../api'
+import { deleteQuote, getAllQuotes, searchQuoteByAuthor } from '../../api'
 import Form from '../Form'
 import Modal from '../Modal'
 import './index.scss'
@@ -10,6 +10,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
   const [listOfQuotes, setListOfQuotes] = useState<IQuote[]>([])
   const [isModalVisible, setModalVisibility] = useState(false)
   const [quoteToBeUpdated, setQuoteToBeUpdated] = useState<IQuote>(null)
+  const [authorToBeSearched, setAuthorToBeSearched] = useState('')
 
   const showModal = () => {
     setModalVisibility(true)
@@ -27,6 +28,13 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
   const showAddQuoteForm = (): void => {
     setQuoteToBeUpdated(null)
     showModal()
+  }
+
+  const handleSearchQuoteByAuthor = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+    const authorValue = event.target.value
+    setAuthorToBeSearched(authorValue)
+    const listOfQuotesSearched = await searchQuoteByAuthor(authorValue)
+    setListOfQuotes(listOfQuotesSearched)
   }
 
   const handleOnSave = (newSavedQuote: IQuote, isAnUpdateEvent: boolean): void => {
@@ -74,7 +82,14 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
       <div>
         <div className='advance-tools'>
           <div>
-            <input type='text' id='search-author' name='searchAuthor' placeholder='Search by author...' />
+            <input
+              type='text'
+              id='search-author'
+              name='searchAuthor'
+              onChange={handleSearchQuoteByAuthor}
+              placeholder='Search by author...'
+              value={authorToBeSearched}
+            />
           </div>
           <div>
             <button className='add-button' onClick={showAddQuoteForm}>
