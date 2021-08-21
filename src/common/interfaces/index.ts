@@ -1,3 +1,4 @@
+export { default as IDeleteQuoteResult } from './IDeleteQuoteResult'
 export { default as IQuote } from './IQuote'
 export { default as IQuoteSaveResponse } from './IQuoteSaveResponse'
 export { default as IReject } from './IReject'

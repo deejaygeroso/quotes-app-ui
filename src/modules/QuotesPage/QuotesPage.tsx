@@ -1,9 +1,9 @@
+import { IDeleteQuoteResult, IQuote } from '../../common/interfaces'
 import { MdDeleteForever, MdEdit, MdPerson } from 'react-icons/md'
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react'
+import { deleteQuote, getAllQuotes } from '../../api'
 import Form from '../Form'
-import { IQuote } from '../../common/interfaces'
 import Modal from '../Modal'
-import getAllQuotes from '../../api/getAllQuotes'
 import './index.scss'
 
 const QuotesPage: FunctionComponent = (): ReactElement => {
@@ -50,6 +50,16 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
     setListOfQuotes(newListOfQuotes)
   }
 
+  const handleDeleteQuote = async (quoteId: string): Promise<void> => {
+    if (confirm('Are you sure you want to delete this quote')) {
+      const result: IDeleteQuoteResult = await deleteQuote(quoteId)
+      if (result.deletedCount === 1 && result.ok === 1) {
+        const newListOfQuotes = listOfQuotes.filter((quote: IQuote): boolean => quoteId !== quote._id)
+        setListOfQuotes(newListOfQuotes)
+      }
+    }
+  }
+
   useEffect(() => {
     fetchAllQuotesFromDB()
   }, [])
@@ -90,7 +100,9 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
                     <span onClick={(): void => showUpdateQuoteForm(quote)} className='action-button edit-button'>
                       <MdEdit />
                     </span>
-                    <span>
+                    <span
+                      onClick={(): Promise<void> => handleDeleteQuote(quote._id)}
+                      className='action-button delete-button'>
                       <MdDeleteForever />
                     </span>
                     <span>
