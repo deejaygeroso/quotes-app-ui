@@ -9,6 +9,7 @@ import './index.scss'
 const QuotesPage: FunctionComponent = (): ReactElement => {
   const [listOfQuotes, setListOfQuotes] = useState<IQuote[]>([])
   const [isModalVisible, setModalVisibility] = useState(false)
+  const [quoteToBeUpdated, setQuoteToBeUpdated] = useState<IQuote>(null)
 
   const showModal = () => {
     setModalVisibility(true)
@@ -18,9 +19,25 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
     setModalVisibility(false)
   }
 
+  const showUpdateQuoteForm = (quoteChosenToBeUpdated: IQuote): void => {
+    setQuoteToBeUpdated(quoteChosenToBeUpdated)
+    showModal()
+  }
+
+  const showAddQuoteForm = (): void => {
+    setQuoteToBeUpdated(null)
+    showModal()
+  }
+
   const handleOnSave = (newSavedQuote: IQuote, isAnUpdateEvent: boolean): void => {
     if (isAnUpdateEvent) {
-      // Update method here
+      const newListOfQuotes = listOfQuotes.map((quote: IQuote): IQuote => {
+        if (quote._id === newSavedQuote._id) {
+          return newSavedQuote
+        }
+        return quote
+      })
+      setListOfQuotes(newListOfQuotes)
     } else {
       const newListOfQuotes = [newSavedQuote, ...listOfQuotes]
       setListOfQuotes(newListOfQuotes)
@@ -41,7 +58,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
     <div className='quotes-page'>
       <h2 className='title'>Tender Quotes</h2>
       <Modal hideModal={hideModal} isVisible={isModalVisible}>
-        <Form onCancel={hideModal} onSave={handleOnSave} />
+        <Form data={quoteToBeUpdated} onCancel={hideModal} onSave={handleOnSave} />
       </Modal>
 
       <div>
@@ -50,7 +67,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
             <input type='text' id='search-author' name='searchAuthor' placeholder='Search by author...' />
           </div>
           <div>
-            <button className='add-button' onClick={showModal}>
+            <button className='add-button' onClick={showAddQuoteForm}>
               Add Quote
             </button>
           </div>
@@ -70,7 +87,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
                   <td>{quote.author}</td>
                   <td>{quote.quote}</td>
                   <td>
-                    <span>
+                    <span onClick={(): void => showUpdateQuoteForm(quote)} className='action-button edit-button'>
                       <MdEdit />
                     </span>
                     <span>
