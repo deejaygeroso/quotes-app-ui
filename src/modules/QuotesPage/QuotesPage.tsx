@@ -1,4 +1,5 @@
 import React, { FunctionComponent, ReactElement } from 'react'
+import './index.scss'
 
 const QuotesPage: FunctionComponent = (): ReactElement => {
   return (
