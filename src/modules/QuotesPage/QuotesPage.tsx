@@ -1,5 +1,6 @@
 import { MdDeleteForever, MdEdit, MdPerson } from 'react-icons/md'
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react'
+import Form from '../Form'
 import { IQuote } from '../../common/interfaces'
 import Modal from '../Modal'
 import getAllQuotes from '../../api/getAllQuotes'
@@ -17,6 +18,10 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
     setModalVisibility(false)
   }
 
+  const handleOnSave = (): void => {
+    // handle save
+  }
+
   const fetchAllQuotesFromDB = async (): Promise<void> => {
     const newListOfQuotes = await getAllQuotes()
     setListOfQuotes(newListOfQuotes)
@@ -30,7 +35,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
     <div className='quotes-page'>
       <h2 className='title'>Tender Quotes</h2>
       <Modal hideModal={hideModal} isVisible={isModalVisible}>
-        <div>Hello</div>
+        <Form onCancel={hideModal} onSave={handleOnSave} />
       </Modal>
 
       <div>
