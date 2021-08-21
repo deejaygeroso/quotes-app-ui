@@ -20,6 +20,15 @@
   }
 }
 
+#author-info {
+  @include flexCenter(column);
+  padding: var(--spacing-size-b) var(--spacing-size-e);
+
+  & > p {
+    margin: var(--spacing-size-b) 0;
+  }
+}
+
 #quotes-page-table {
   border: var(--border-grey-line);
   margin: var(--spacing-size-d) 0;

@@ -1,16 +1,19 @@
-import { IDeleteQuoteResult, IQuote } from '../../common/interfaces'
+import { IAuthorInfoResult, IDeleteQuoteResult, IQuote } from '../../common/interfaces'
 import { MdDeleteForever, MdEdit, MdPerson } from 'react-icons/md'
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react'
-import { deleteQuote, getAllQuotes, searchQuoteByAuthor } from '../../api'
+import { deleteQuote, getAllQuotes, getAuthorInfo, searchQuoteByAuthor } from '../../api'
 import Form from '../Form'
 import Modal from '../Modal'
 import './index.scss'
 
 const QuotesPage: FunctionComponent = (): ReactElement => {
   const [listOfQuotes, setListOfQuotes] = useState<IQuote[]>([])
-  const [isModalVisible, setModalVisibility] = useState(false)
-  const [quoteToBeUpdated, setQuoteToBeUpdated] = useState<IQuote>(null)
   const [authorToBeSearched, setAuthorToBeSearched] = useState('')
+  const [authorInfo, setAuthorInfo] = useState<IAuthorInfoResult>(null)
+
+  // state used on modal
+  const [quoteToBeUpdated, setQuoteToBeUpdated] = useState<IQuote>(null)
+  const [isModalVisible, setModalVisibility] = useState(false)
   const [isFormVisible, setFormVisibility] = useState(false)
 
   const showModal = () => {
@@ -19,11 +22,6 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
 
   const hideModal = (): void => {
     setModalVisibility(false)
-  }
-
-  const showUserInfoModal = (): void => {
-    setFormVisibility(false)
-    showModal()
   }
 
   const showUpdateQuoteForm = (quoteChosenToBeUpdated: IQuote): void => {
@@ -36,6 +34,13 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
     setQuoteToBeUpdated(null)
     setFormVisibility(true)
     showModal()
+  }
+
+  const showUserInfoModal = async (author: string): Promise<void> => {
+    setFormVisibility(false)
+    showModal()
+    const authorInfoResult = await getAuthorInfo(author)
+    setAuthorInfo(authorInfoResult)
   }
 
   const handleSearchQuoteByAuthor = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
@@ -88,7 +93,18 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
           {isFormVisible ? (
             <Form data={quoteToBeUpdated} onCancel={hideModal} onSave={handleOnSave} />
           ) : (
-            <div>Hello</div>
+            <div id='author-info'>
+              {authorInfo && authorInfo.info ? (
+                <>
+                  <p>{authorInfo.author}</p>
+                  <p>{authorInfo.info}</p>
+                </>
+              ) : (
+                <>
+                  <p>Author info not found on wikipedia</p>
+                </>
+              )}
+            </div>
           )}
         </>
       </Modal>
@@ -134,7 +150,9 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
                       className='action-button delete-button'>
                       <MdDeleteForever />
                     </span>
-                    <span onClick={showUserInfoModal} className='action-button user-info-button'>
+                    <span
+                      onClick={(): Promise<void> => showUserInfoModal(quote.author)}
+                      className='action-button user-info-button'>
                       <MdPerson />
                     </span>
                   </td>
