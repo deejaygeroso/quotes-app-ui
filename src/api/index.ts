@@ -1,0 +1,6 @@
+export { default as createQuote } from './createQuote'
+export { default as deleteQuote } from './deleteQuote'
+export { default as getAllQuotes } from './getAllQuotes'
+export { default as getAuthorInfo } from './getAuthorInfo'
+export { default as searchQuoteByAuthor } from './searchQuoteByAuthor'
+export { default as updateQuote } from './updateQuote'

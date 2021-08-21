@@ -1,0 +1,59 @@
+html,
+body,
+#app {
+  background-color: white;
+  color: #d2f5ff;
+  font-family: var(--font-family);
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+p,
+a,
+h1,
+h2,
+h3,
+h4,
+h5 {
+  padding: 0;
+  margin: 0;
+}
+
+p,
+a,
+h1,
+h2,
+h3,
+h4,
+h5,
+ul,
+li,
+button,
+div {
+  color: var(--background-color-dark);
+  font-family: var(--font-family);
+}
+
+p,
+a,
+ul,
+li,
+button {
+  font-size: var(--font-size-m);
+}
+
+h1 {
+  font-size: var(--font-size-l);
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: var(--spacing-size-b);
+  transition: 0.3s;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}

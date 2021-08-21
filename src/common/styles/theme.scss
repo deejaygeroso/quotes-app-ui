@@ -1,0 +1,55 @@
+:root {
+  --background-color-dark: #181b1e;
+  --background-color-light: white;
+
+  --border-grey-line: 1px solid #efefef;
+  --border-radius: 3px;
+
+  --color-app: #009aea;
+  --color-grey: grey;
+  --color-info: blue;
+  --color-success: green;
+  --color-danger: red;
+  --color-warning: orange;
+
+  --font-family: Montserrat, tahoma, verdana, sans-serif;
+
+  --linked-in: #0077b5;
+
+  --modal-overlay-color: #0000004a;
+  --modal-padding: 100px;
+  --modal-zIndex: 90;
+
+  --spacing-size-a: 5px;
+  --spacing-size-b: 10px;
+  --spacing-size-c: 15px;
+  --spacing-size-d: 20px;
+  --spacing-size-e: 30px;
+}
+
+/* ----------- Desktop Screens ----------- */
+@media screen and (min-width: 1200px) {
+  :root {
+    --font-size-sm: 12px;
+    --font-size-m: 17px;
+    --font-size-l: 21px;
+  }
+}
+
+/* ----------- Tablet Screens ----------- */
+@media only screen and (min-width: 768px) and (max-width: 1200px) {
+  :root {
+    --font-size-sm: 10px;
+    --font-size-m: 14px;
+    --font-size-l: 19px;
+  }
+}
+
+/* ----------- Mobile Screens ----------- */
+@media only screen and (max-width: 768px) {
+  :root {
+    --font-size-sm: 10px;
+    --font-size-m: 12px;
+    --font-size-l: 17px;
+  }
+}

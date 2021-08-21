@@ -1,0 +1,6 @@
+export { default as IAuthorInfoResult } from './IAuthorInfoResult'
+export { default as IDeleteQuoteResult } from './IDeleteQuoteResult'
+export { default as IQuote } from './IQuote'
+export { default as IQuoteSaveResponse } from './IQuoteSaveResponse'
+export { default as IReject } from './IReject'
+export { default as IResolve } from './IResolve'
