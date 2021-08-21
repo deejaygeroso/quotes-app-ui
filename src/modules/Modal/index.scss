@@ -1,0 +1,28 @@
+@import '../../common/styles/mixins.scss';
+
+#modal {
+  align-items: center;
+  background-color: var(--modal-overlay-color);
+  bottom: 0;
+  box-sizing: border-box;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  padding: var(--modal-padding);
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: var(--modal-zIndex);
+}
+
+#modal.modal-display-none {
+  display: none;
+}
+
+#modal-content {
+  background-color: var(--background-color-light);
+  height: 100%;
+  width: 90%;
+}
