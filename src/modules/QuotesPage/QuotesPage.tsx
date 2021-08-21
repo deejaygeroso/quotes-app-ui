@@ -1,3 +1,4 @@
+import { MdDeleteForever, MdEdit, MdPerson } from 'react-icons/md'
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react'
 import { IQuote } from '../../common/interfaces'
 import getAllQuotes from '../../api/getAllQuotes'
@@ -33,9 +34,15 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
                 <td>{quote.author}</td>
                 <td>{quote.quote}</td>
                 <td>
-                  <span>Update</span>
-                  <span>Delete</span>
-                  <span>Info</span>
+                  <span>
+                    <MdEdit />
+                  </span>
+                  <span>
+                    <MdDeleteForever />
+                  </span>
+                  <span>
+                    <MdPerson />
+                  </span>
                 </td>
               </tr>
             ),
