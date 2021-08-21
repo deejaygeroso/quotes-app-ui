@@ -11,6 +11,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
   const [isModalVisible, setModalVisibility] = useState(false)
   const [quoteToBeUpdated, setQuoteToBeUpdated] = useState<IQuote>(null)
   const [authorToBeSearched, setAuthorToBeSearched] = useState('')
+  const [isFormVisible, setFormVisibility] = useState(false)
 
   const showModal = () => {
     setModalVisibility(true)
@@ -20,13 +21,20 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
     setModalVisibility(false)
   }
 
+  const showUserInfoModal = (): void => {
+    setFormVisibility(false)
+    showModal()
+  }
+
   const showUpdateQuoteForm = (quoteChosenToBeUpdated: IQuote): void => {
     setQuoteToBeUpdated(quoteChosenToBeUpdated)
+    setFormVisibility(true)
     showModal()
   }
 
   const showAddQuoteForm = (): void => {
     setQuoteToBeUpdated(null)
+    setFormVisibility(true)
     showModal()
   }
 
@@ -76,7 +84,13 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
     <div className='quotes-page'>
       <h2 className='title'>Tender Quotes</h2>
       <Modal hideModal={hideModal} isVisible={isModalVisible}>
-        <Form data={quoteToBeUpdated} onCancel={hideModal} onSave={handleOnSave} />
+        <>
+          {isFormVisible ? (
+            <Form data={quoteToBeUpdated} onCancel={hideModal} onSave={handleOnSave} />
+          ) : (
+            <div>Hello</div>
+          )}
+        </>
       </Modal>
 
       <div>
@@ -120,7 +134,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
                       className='action-button delete-button'>
                       <MdDeleteForever />
                     </span>
-                    <span>
+                    <span onClick={showUserInfoModal} className='action-button user-info-button'>
                       <MdPerson />
                     </span>
                   </td>
