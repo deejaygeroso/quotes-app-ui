@@ -42,3 +42,22 @@ input[type='text']#search-author {
   padding: var(--search-author-input-padding);
   width: var(--search-author-input-width);
 }
+
+.add-button {
+  --add-button-border-radius: 50px;
+  --add-button-color: #ffa184;
+  --add-button-color-hover: #fb8d6b;
+  --add-button-width: 150px;
+  background: var(--add-button-color);
+  border: 1px solid var(--add-button-color);
+  border-radius: var(--add-button-border-radius);
+  color: white;
+  cursor: pointer;
+  margin: 0 var(--spacing-size-a);
+  padding: var(--spacing-size-b);
+  width: var(--add-button-width);
+
+  &:hover {
+    background: var(--add-button-color-hover);
+  }
+}
