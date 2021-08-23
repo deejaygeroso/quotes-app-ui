@@ -1,13 +1,15 @@
-import { IAuthorInfoResult, IQuote } from '../../common/interfaces'
+import { IAuthorInfoResult, IQuote, SortTypes } from '../../common/interfaces'
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react'
 import { getAllQuotes, getAuthorInfo, searchQuoteByAuthor } from '../../api'
 import Form from '../Form'
 import Modal from '../Modal'
 import Table from '../Table/Table'
+import sortQuotesAlphabetically from './sortQuotesAlphabetically'
 import './index.scss'
 
 const QuotesPage: FunctionComponent = (): ReactElement => {
   const [listOfQuotes, setListOfQuotes] = useState<IQuote[]>([])
+  const [sortedQuotes, setSortedQuotes] = useState<IQuote[]>([])
   const [authorToBeSearched, setAuthorToBeSearched] = useState('')
   const [authorInfo, setAuthorInfo] = useState<IAuthorInfoResult>(null)
 
@@ -44,11 +46,21 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
     showModal()
   }
 
+  const sortQuotes = (sortBy: SortTypes): void => {
+    if (sortBy) {
+      const newSortedQuotes = sortQuotesAlphabetically(sortBy, listOfQuotes)
+      setSortedQuotes(newSortedQuotes)
+    } else {
+      setSortedQuotes([])
+    }
+  }
+
   const handleSearchQuoteByAuthor = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     const authorValue = event.target.value
     setAuthorToBeSearched(authorValue)
     const listOfQuotesSearched = await searchQuoteByAuthor(authorValue)
     setListOfQuotes(listOfQuotesSearched)
+    setSortedQuotes([])
   }
 
   const updateAQuoteFromTheListOfQuotes = (newSavedQuote: IQuote): void => {
@@ -129,9 +141,10 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
           </div>
         </div>
         <Table
-          quotes={listOfQuotes}
+          quotes={sortedQuotes.length !== 0 ? sortedQuotes : listOfQuotes}
           onDelete={removeDeletedQuoteFromQuotesList}
           onEdit={showUpdateQuoteForm}
+          onSort={sortQuotes}
           onViewUserInfo={showUserInfoModal}
         />
       </div>
