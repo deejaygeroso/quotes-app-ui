@@ -23,7 +23,7 @@
     --buttons-section-height: 40px;
     @include flex(row);
     @include flexJustifyContent(flex-end);
-    height: var(--buttons-section-heigh);
+    height: var(--buttons-section-height);
     padding: var(--spacing-size-d) 0 0 0;
   }
 }
