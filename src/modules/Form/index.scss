@@ -46,6 +46,8 @@
     display: inline-block;
     border: 2px solid var(--color-app);
     border-radius: var(--border-radius);
+    font-family: var(--font-family);
+    font-size: var(--font-size-m);
     padding: var(--input-padding);
     width: 100%;
 
@@ -57,6 +59,8 @@
   & > textarea#quote-input {
     border-radius: var(--border-radius);
     border: 2px solid var(--color-app);
+    font-family: var(--font-family);
+    font-size: var(--font-size-m);
     padding: var(--input-padding);
     resize: none;
 
