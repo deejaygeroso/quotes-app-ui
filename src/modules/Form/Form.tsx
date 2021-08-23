@@ -2,15 +2,17 @@ import { IQuote, IQuoteSaveResponse } from '../../common/interfaces'
 import React, { ReactElement, useEffect, useState } from 'react'
 import createQuote from '../../api/createQuote'
 import updateQuote from '../../api/updateQuote'
+import './index.scss'
 
 interface IProps {
   data: IQuote
   onCancel: () => void
-  onSave: (quote: IQuote, isAnUpdateEvent: boolean) => void
+  onCreate: (quote: IQuote) => void
+  onUpdate: (quote: IQuote) => void
 }
 
 const Form = (props: IProps): ReactElement => {
-  const { data = null, onCancel, onSave } = props
+  const { data = null, onCancel, onCreate, onUpdate } = props
   const [author, setAuthor] = useState('')
   const [quote, setQuote] = useState('')
 
@@ -30,14 +32,14 @@ const Form = (props: IProps): ReactElement => {
   const updateQuoteFromDB = async (quoteId: string): Promise<void> => {
     const result: IQuoteSaveResponse = await updateQuote(quoteId, author, quote)
     if (!result.error) {
-      onSave(result, !!data)
+      onUpdate(result)
     }
   }
 
   const createNewQuoteThenSaveToDB = async (): Promise<void> => {
     const result: IQuoteSaveResponse = await createQuote(author, quote)
     if (!result.error) {
-      onSave(result, !!data)
+      onCreate(result)
     }
   }
 
@@ -64,18 +66,28 @@ const Form = (props: IProps): ReactElement => {
   return (
     <div className='modal-form'>
       <h1>Add Quote</h1>
-      <div>
+      <div className='input-wrapper'>
+        <label htmlFor='author-input'>Author Name:</label>
         <input
           type='text'
           id='author-input'
           name='author'
-          placeholder=''
+          placeholder='Author Name'
           value={author}
           onChange={handleAuthorChange}
         />
       </div>
-      <div>
-        <textarea id='quite-input' name='quote' rows={4} cols={50} value={quote} onChange={handleQuoteChange} />
+      <div className='input-wrapper'>
+        <label htmlFor='quote-input'>Quote:</label>
+        <textarea
+          id='quote-input'
+          name='quote'
+          rows={12}
+          cols={80}
+          value={quote}
+          onChange={handleQuoteChange}
+          placeholder={`Write the author's quote here...`}
+        />
       </div>
       <div>
         <button className='cancel-button' onClick={onCancel}>
