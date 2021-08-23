@@ -1,6 +1,6 @@
 import { IAuthorInfoResult, IQuote, SortTypes } from '../../common/interfaces'
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react'
-import { getAllQuotes, getAuthorInfo, searchQuoteByAuthor } from '../../api'
+import { getAllQuotes, getAuthorInfo, searchQuote } from '../../api'
 import AuthorInfo from '../AuthorInfo'
 import Form from '../Form'
 import Modal from '../Modal'
@@ -59,7 +59,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
   const handleSearchQuoteByAuthor = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     const authorValue = event.target.value
     setTextToSearch(authorValue)
-    const listOfQuotesSearched = await searchQuoteByAuthor(authorValue)
+    const listOfQuotesSearched = await searchQuote(authorValue)
     setListOfQuotes(listOfQuotesSearched)
     setSortedQuotes([])
   }
