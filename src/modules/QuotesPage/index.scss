@@ -29,3 +29,16 @@
     margin: var(--spacing-size-b) 0;
   }
 }
+
+input[type='text']#search-author {
+  --search-author-input-border-radius: 20px;
+  --search-author-input-borer: 1px solid #ccc;
+  --search-author-input-padding: 12px 20px;
+  --search-author-input-width: 350px;
+  box-sizing: border-box;
+  display: inline-block;
+  border: var(--search-author-input-borer);
+  border-radius: var(--search-author-input-border-radius);
+  padding: var(--search-author-input-padding);
+  width: var(--search-author-input-width);
+}
