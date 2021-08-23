@@ -5,7 +5,7 @@ const apiRoute = {
   deleteQuote: `${apiURL}/api/deleteQuote`,
   getAllQuotes: `${apiURL}/api/getAllQuotes`,
   getAuthorInfo: `${apiURL}/api/getAuthorInfo`,
-  searchQuoteByAuthor: `${apiURL}/api/searchQuoteByAuthor`,
+  searchQuote: `${apiURL}/api/searchQuote`,
   updateQuote: `${apiURL}/api/updateQuote`,
 }
 

@@ -1,11 +1,11 @@
 import { IQuote, IResolve } from '../common/interfaces'
 import { apiRoutes } from '../common/constants'
 
-const searchQuoteByAuthor = async (author: string): Promise<IQuote[]> => {
+const searchQuote = async (searchInput: string): Promise<IQuote[]> => {
   return new Promise((resolve: IResolve<IQuote[]>): void => {
-    fetch(apiRoutes.searchQuoteByAuthor, {
+    fetch(apiRoutes.searchQuote, {
       body: JSON.stringify({
-        author,
+        searchInput,
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -18,4 +18,4 @@ const searchQuoteByAuthor = async (author: string): Promise<IQuote[]> => {
   })
 }
 
-export default searchQuoteByAuthor
+export default searchQuote

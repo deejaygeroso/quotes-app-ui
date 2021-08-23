@@ -73,6 +73,9 @@
         }
       }
     }
+    & > tr.no-record {
+      font-style: italic;
+    }
   }
 }
 
@@ -80,4 +83,9 @@
   cursor: pointer;
   position: relative;
   top: 3px;
+}
+
+.search-highlight {
+  color: var(--color-success);
+  font-weight: bold;
 }

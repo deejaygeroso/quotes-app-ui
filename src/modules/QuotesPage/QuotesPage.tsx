@@ -11,7 +11,7 @@ import './index.scss'
 const QuotesPage: FunctionComponent = (): ReactElement => {
   const [listOfQuotes, setListOfQuotes] = useState<IQuote[]>([])
   const [sortedQuotes, setSortedQuotes] = useState<IQuote[]>([])
-  const [authorToBeSearched, setAuthorToBeSearched] = useState('')
+  const [textToSearch, setTextToSearch] = useState('')
   const [authorInfo, setAuthorInfo] = useState<IAuthorInfoResult>(null)
 
   // state used on modal
@@ -58,7 +58,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
 
   const handleSearchQuoteByAuthor = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     const authorValue = event.target.value
-    setAuthorToBeSearched(authorValue)
+    setTextToSearch(authorValue)
     const listOfQuotesSearched = await searchQuoteByAuthor(authorValue)
     setListOfQuotes(listOfQuotesSearched)
     setSortedQuotes([])
@@ -121,7 +121,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
               name='searchAuthor'
               onChange={handleSearchQuoteByAuthor}
               placeholder='Search by author name...'
-              value={authorToBeSearched}
+              value={textToSearch}
             />
           </div>
           <div>
@@ -136,6 +136,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
           onEdit={showUpdateQuoteForm}
           onSort={sortQuotes}
           onViewUserInfo={showUserInfoModal}
+          textToSearch={textToSearch}
         />
       </div>
     </div>
