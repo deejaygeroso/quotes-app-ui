@@ -11,6 +11,7 @@
 
 .advance-tools {
   @include flexCenter(row);
+  margin: 0 var(--spacing-size-a) 0 var(--spacing-size-b);
 
   & > div:first-child {
     flex: 1;
