@@ -16,12 +16,29 @@ const Form = (props: IProps): ReactElement => {
   const [author, setAuthor] = useState('')
   const [quote, setQuote] = useState('')
 
+  const [isAuthorError, setAuthorError] = useState(false)
+  const [isQuoteError, setQuoteError] = useState(false)
+
   const handleAuthorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAuthor(event.target.value)
+    const authorValue = event.target.value
+    setAuthor(authorValue)
+
+    if (authorValue === '') {
+      setAuthorError(true)
+    } else {
+      setAuthorError(false)
+    }
   }
 
   const handleQuoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setQuote(event.target.value)
+    const quoteValue = event.target.value
+    setQuote(quoteValue)
+
+    if (quoteValue === '') {
+      setQuoteError(true)
+    } else {
+      setQuoteError(false)
+    }
   }
 
   const clearForm = (): void => {
@@ -63,37 +80,45 @@ const Form = (props: IProps): ReactElement => {
     }
   }, [data])
 
+  const isSaveButtonDisabled = !author || !quote
+
   return (
     <div className='modal-form'>
       <h1>{data ? 'Update' : 'Add'} Quote</h1>
       <div className='input-wrapper'>
-        <label htmlFor='author-input'>Author Name:</label>
+        <label htmlFor='author-input'>
+          Author Name* {isAuthorError && <span className='error-message'>Author must not be empty</span>}
+        </label>
         <input
-          type='text'
+          className={isAuthorError ? 'input-error' : ''}
           id='author-input'
           name='author'
           placeholder='Author Name'
+          type='text'
           value={author}
           onChange={handleAuthorChange}
         />
       </div>
       <div className='input-wrapper'>
-        <label htmlFor='quote-input'>Quote:</label>
+        <label htmlFor='quote-input'>
+          Quote* {isQuoteError && <span className='error-message'>Quote must not be empty</span>}
+        </label>
         <textarea
+          className={isQuoteError ? 'input-error' : ''}
+          cols={80}
           id='quote-input'
           name='quote'
           rows={12}
-          cols={80}
-          value={quote}
           onChange={handleQuoteChange}
           placeholder={`Write the author's quote here...`}
+          value={quote}
         />
       </div>
       <div>
         <button className='cancel-button' onClick={onCancel}>
           Cancel
         </button>
-        <button className='save-button' onClick={handleSave}>
+        <button className='save-button' onClick={handleSave} disabled={isSaveButtonDisabled}>
           Save
         </button>
       </div>
