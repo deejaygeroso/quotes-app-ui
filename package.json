@@ -6,7 +6,7 @@
     "build": "webpack --mode production --config ./config/webpack/webpack.config.js",
     "dev": "webpack serve --mode development --config ./config/webpack/webpack.config.js",
     "lint": "eslint -c ./config/eslint/.eslintrc.js 'src/**/*.{ts,tsx}' --ignore-pattern '*.test.*'",
-    "start": "serve -l 8000 -s dist",
+    "start": "serve -l 3000 -s dist",
     "test": "jest --config ./config/jest/jest.config.json"
   },
   "repository": {
