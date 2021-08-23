@@ -68,14 +68,6 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
     hideModal()
   }
 
-  const handleOnSave = (newSavedQuote: IQuote, isAnUpdateEvent: boolean): void => {
-    if (isAnUpdateEvent) {
-      updateAQuoteFromTheListOfQuotes(newSavedQuote)
-    } else {
-      addNewQuoteToTheListOfQuotes(newSavedQuote)
-    }
-  }
-
   const removeDeletedQuoteFromQuotesList = async (quoteId: string): Promise<void> => {
     const newListOfQuotes = listOfQuotes.filter((quote: IQuote): boolean => quoteId !== quote._id)
     setListOfQuotes(newListOfQuotes)
@@ -95,7 +87,12 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
       <Modal hideModal={hideModal} isVisible={isModalVisible}>
         <>
           {isFormVisible ? (
-            <Form data={quoteToBeUpdated} onCancel={hideModal} onSave={handleOnSave} />
+            <Form
+              data={quoteToBeUpdated}
+              onCancel={hideModal}
+              onCreate={addNewQuoteToTheListOfQuotes}
+              onUpdate={updateAQuoteFromTheListOfQuotes}
+            />
           ) : (
             <div id='author-info'>
               {authorInfo && authorInfo.info ? (
