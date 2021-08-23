@@ -1,15 +1,15 @@
 :root {
-  --background-color-dark: #181b1e;
-  --background-color-light: white;
+  --background-color: #f0f2f5;
 
-  --border-grey-line: 1px solid #efefef;
-  --border-radius: 3px;
+  --border-grey-line: 1px solid #e3e3e3;
+  --border-radius: 5px;
 
-  --color-app: #009aea;
+  --color-app: #8685ef;
+  --color-app-hover: #7574e2;
   --color-grey: grey;
-  --color-info: blue;
-  --color-success: green;
-  --color-danger: red;
+  --color-info: #ff83b1;
+  --color-success: #00ac87;
+  --color-danger: #ee6464;
   --color-warning: orange;
 
   --font-family: Montserrat, tahoma, verdana, sans-serif;
@@ -25,6 +25,10 @@
   --spacing-size-c: 15px;
   --spacing-size-d: 20px;
   --spacing-size-e: 30px;
+
+  --table-color: #ffffff;
+  --table-tr-odd-background: #f7f7f7;
+  --text-color: #292929;
 }
 
 /* ----------- Desktop Screens ----------- */
