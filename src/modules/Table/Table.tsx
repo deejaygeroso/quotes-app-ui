@@ -11,10 +11,11 @@ interface IProps {
   onSort: (sortBy: SortTypes) => void
   onViewUserInfo: (author: string) => Promise<void>
   quotes: IQuote[]
+  textToSearch: string
 }
 
 const Table = (props: IProps): ReactElement => {
-  const { onDelete, onEdit, onSort, onViewUserInfo, quotes } = props
+  const { onDelete, onEdit, onSort, onViewUserInfo, quotes, textToSearch } = props
   const [sort, setSort] = useState<SortTypes>('')
 
   const handleDeleteQuote = async (quoteId: string): Promise<void> => {
@@ -55,6 +56,24 @@ const Table = (props: IProps): ReactElement => {
     )
   }
 
+  const getHighlightedText = (text: string): ReactElement => {
+    if (textToSearch === '') {
+      return <p>{text}</p>
+    }
+
+    // Split on highlight term and include term into parts, ignore case
+    const parts = text.split(new RegExp(`(${textToSearch})`, 'gi'))
+    return (
+      <p>
+        {parts.map((part, i) => (
+          <span key={i} className={part.toLowerCase() === textToSearch.toLowerCase() ? 'search-highlight' : ''}>
+            {part}
+          </span>
+        ))}
+      </p>
+    )
+  }
+
   return (
     <table id='quotes-page-table' className='card' cellSpacing='0' cellPadding='0'>
       <thead>
@@ -67,30 +86,40 @@ const Table = (props: IProps): ReactElement => {
         </tr>
       </thead>
       <tbody>
-        {quotes.map(
-          (quote: IQuote, key: number): ReactElement => (
-            <tr key={key}>
-              <td>{quote.author}</td>
-              <td>{quote.quote}</td>
-              <td>
-                <div>
-                  <span
-                    onClick={(): Promise<void> => onViewUserInfo(quote.author)}
-                    className='action-button user-info-button'>
-                    <MdPerson />
-                  </span>
-                  <span onClick={(): void => onEdit(quote)} className='action-button edit-button'>
-                    <MdEdit />
-                  </span>
-                  <span
-                    onClick={(): Promise<void> => handleDeleteQuote(quote._id)}
-                    className='action-button delete-button'>
-                    <MdDeleteForever />
-                  </span>
-                </div>
-              </td>
-            </tr>
-          ),
+        {quotes && quotes.length !== 0 ? (
+          <>
+            {quotes.map(
+              (quote: IQuote, key: number): ReactElement => (
+                <tr key={key}>
+                  <td>{getHighlightedText(quote.author)}</td>
+                  <td>{getHighlightedText(quote.quote)}</td>
+                  <td>
+                    <div>
+                      <span
+                        onClick={(): Promise<void> => onViewUserInfo(quote.author)}
+                        className='action-button user-info-button'>
+                        <MdPerson />
+                      </span>
+                      <span onClick={(): void => onEdit(quote)} className='action-button edit-button'>
+                        <MdEdit />
+                      </span>
+                      <span
+                        onClick={(): Promise<void> => handleDeleteQuote(quote._id)}
+                        className='action-button delete-button'>
+                        <MdDeleteForever />
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              ),
+            )}
+          </>
+        ) : (
+          <tr className='no-record'>
+            <td></td>
+            <td>No Record Found</td>
+            <td></td>
+          </tr>
         )}
       </tbody>
     </table>
