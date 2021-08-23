@@ -1,7 +1,10 @@
 @import '../../common/styles/mixins.scss';
 
 .title {
-  margin: var(--spacing-size-d) 0;
+  --title-size: 35px;
+  color: var(--color-app);
+  font-size: var(--title-size);
+  margin: var(--spacing-size-e) 0 var(--spacing-size-d) 0;
 }
 
 .quotes-page {
@@ -10,6 +13,7 @@
 
 .advance-tools {
   @include flexCenter(row);
+  margin: 0 var(--spacing-size-a) 0 var(--spacing-size-b);
 
   & > div:first-child {
     flex: 1;
@@ -29,39 +33,34 @@
   }
 }
 
-#quotes-page-table {
-  border: var(--border-grey-line);
-  margin: var(--spacing-size-d) 0;
-  text-align: center;
+input[type='text']#search-author {
+  --search-author-input-border-radius: 20px;
+  --search-author-input-borer: 1px solid #ccc;
+  --search-author-input-padding: 12px 20px;
+  --search-author-input-width: 350px;
+  box-sizing: border-box;
+  display: inline-block;
+  border: var(--search-author-input-borer);
+  border-radius: var(--search-author-input-border-radius);
+  padding: var(--search-author-input-padding);
+  width: var(--search-author-input-width);
+}
 
-  & > thead > tr > th:nth-child(1) {
-    width: 150px;
-  }
-  & > thead > tr > th:nth-child(2) {
-    width: 580px;
-  }
-  & > thead > tr > th:nth-child(3) {
-    width: 150px;
-  }
+.add-button {
+  --add-button-border-radius: 50px;
+  --add-button-color: #ffa184;
+  --add-button-color-hover: #fb8d6b;
+  --add-button-width: 150px;
+  background: var(--add-button-color);
+  border: 1px solid var(--add-button-color);
+  border-radius: var(--add-button-border-radius);
+  color: white;
+  cursor: pointer;
+  margin: 0 var(--spacing-size-a);
+  padding: var(--spacing-size-b);
+  width: var(--add-button-width);
 
-  & > tbody > tr > td:nth-child(3) {
-    @include flexCenter(row);
-
-    & > .action-button {
-      @include flexCenter(row);
-
-      border: var(--border-grey-line);
-      border-radius: var(--border-radius);
-      color: var(--color-grey);
-      cursor: pointer;
-      margin: 0;
-      padding: var(--spacing-size-a);
-    }
-    & > .action-button:nth-child(2) {
-      margin: 0 var(--spacing-size-a);
-    }
-    & > .action-button:hover {
-      filter: brightness(0.85);
-    }
+  &:hover {
+    background: var(--add-button-color-hover);
   }
 }

@@ -1,0 +1,83 @@
+@import '../../common/styles/mixins.scss';
+
+#quotes-page-table {
+  background: var(--table-color);
+  border-radius: var(--border-radius);
+  color: var(--text-color);
+  font-size: var(--font-size-m);
+  margin: var(--spacing-size-b);
+  padding: 0;
+  text-align: center;
+
+  & > thead > tr {
+    & > th {
+      background: var(--color-app);
+      color: white;
+      padding: var(--spacing-size-c);
+
+      &:nth-child(1) {
+        border-top-left-radius: var(--border-radius);
+        width: 250px;
+      }
+      &:nth-child(2) {
+        width: 850px;
+      }
+      &:nth-child(3) {
+        border-top-right-radius: var(--border-radius);
+        padding: 0 35px 0 0;
+        text-align: right;
+        width: 250px;
+      }
+    }
+  }
+
+  & > tbody {
+    & > tr {
+      &:nth-child(even) {
+        background: var(--table-tr-odd-background);
+      }
+      & > td {
+        padding: var(--spacing-size-b) 0;
+
+        &:nth-child(3) {
+          & div {
+            @include flex(row);
+            @include flexJustifyContent(flex-end);
+            padding: 0 var(--spacing-size-d) 0 0;
+
+            & > .action-button {
+              @include flexCenter(row);
+
+              border: var(--border-grey-line);
+              border-radius: var(--border-radius);
+              color: var(--color-grey);
+              cursor: pointer;
+              margin: 0;
+              padding: var(--spacing-size-a);
+            }
+            & > .action-button:nth-child(2) {
+              margin: 0 var(--spacing-size-a);
+            }
+            & > .action-button:hover {
+              filter: brightness(0.85);
+            }
+          }
+        }
+      }
+      &:last-child {
+        & > td:first-child {
+          border-bottom-left-radius: var(--border-radius);
+        }
+        & > td:last-child {
+          border-bottom-right-radius: var(--border-radius);
+        }
+      }
+    }
+  }
+}
+
+.sort-icons {
+  cursor: pointer;
+  position: relative;
+  top: 3px;
+}

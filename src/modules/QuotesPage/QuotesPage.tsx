@@ -1,13 +1,16 @@
-import { IAuthorInfoResult, IDeleteQuoteResult, IQuote } from '../../common/interfaces'
-import { MdDeleteForever, MdEdit, MdPerson } from 'react-icons/md'
+import { IAuthorInfoResult, IQuote, SortTypes } from '../../common/interfaces'
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react'
-import { deleteQuote, getAllQuotes, getAuthorInfo, searchQuoteByAuthor } from '../../api'
+import { getAllQuotes, getAuthorInfo, searchQuoteByAuthor } from '../../api'
+import AuthorInfo from '../AuthorInfo'
 import Form from '../Form'
 import Modal from '../Modal'
+import Table from '../Table/Table'
+import sortQuotesAlphabetically from './sortQuotesAlphabetically'
 import './index.scss'
 
 const QuotesPage: FunctionComponent = (): ReactElement => {
   const [listOfQuotes, setListOfQuotes] = useState<IQuote[]>([])
+  const [sortedQuotes, setSortedQuotes] = useState<IQuote[]>([])
   const [authorToBeSearched, setAuthorToBeSearched] = useState('')
   const [authorInfo, setAuthorInfo] = useState<IAuthorInfoResult>(null)
 
@@ -22,6 +25,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
 
   const hideModal = (): void => {
     setModalVisibility(false)
+    setAuthorInfo(null)
   }
 
   const showUpdateQuoteForm = (quoteChosenToBeUpdated: IQuote): void => {
@@ -37,10 +41,19 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
   }
 
   const showUserInfoModal = async (author: string): Promise<void> => {
-    setFormVisibility(false)
-    showModal()
     const authorInfoResult = await getAuthorInfo(author)
     setAuthorInfo(authorInfoResult)
+    setFormVisibility(false)
+    showModal()
+  }
+
+  const sortQuotes = (sortBy: SortTypes): void => {
+    if (sortBy) {
+      const newSortedQuotes = sortQuotesAlphabetically(sortBy, listOfQuotes)
+      setSortedQuotes(newSortedQuotes)
+    } else {
+      setSortedQuotes([])
+    }
   }
 
   const handleSearchQuoteByAuthor = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
@@ -48,39 +61,35 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
     setAuthorToBeSearched(authorValue)
     const listOfQuotesSearched = await searchQuoteByAuthor(authorValue)
     setListOfQuotes(listOfQuotesSearched)
+    setSortedQuotes([])
   }
 
-  const handleOnSave = (newSavedQuote: IQuote, isAnUpdateEvent: boolean): void => {
-    if (isAnUpdateEvent) {
-      const newListOfQuotes = listOfQuotes.map((quote: IQuote): IQuote => {
-        if (quote._id === newSavedQuote._id) {
-          return newSavedQuote
-        }
-        return quote
-      })
-      setListOfQuotes(newListOfQuotes)
-    } else {
-      const newListOfQuotes = [newSavedQuote, ...listOfQuotes]
-      setListOfQuotes(newListOfQuotes)
-    }
+  const updateAQuoteFromTheListOfQuotes = (newSavedQuote: IQuote): void => {
+    const newListOfQuotes = listOfQuotes.map((quote: IQuote): IQuote => {
+      if (quote._id === newSavedQuote._id) {
+        return newSavedQuote
+      }
+      return quote
+    })
+    setListOfQuotes(newListOfQuotes)
     hideModal()
+  }
+
+  const addNewQuoteToTheListOfQuotes = (newCreatedQuote: IQuote): void => {
+    const newListOfQuotes = [newCreatedQuote, ...listOfQuotes]
+    setListOfQuotes(newListOfQuotes)
+    hideModal()
+  }
+
+  const removeDeletedQuoteFromQuotesList = async (quoteId: string): Promise<void> => {
+    const newListOfQuotes = listOfQuotes.filter((quote: IQuote): boolean => quoteId !== quote._id)
+    setListOfQuotes(newListOfQuotes)
   }
 
   const fetchAllQuotesFromDB = async (): Promise<void> => {
     const newListOfQuotes = await getAllQuotes()
     setListOfQuotes(newListOfQuotes)
   }
-
-  const handleDeleteQuote = async (quoteId: string): Promise<void> => {
-    if (confirm('Are you sure you want to delete this quote')) {
-      const result: IDeleteQuoteResult = await deleteQuote(quoteId)
-      if (result.deletedCount === 1 && result.ok === 1) {
-        const newListOfQuotes = listOfQuotes.filter((quote: IQuote): boolean => quoteId !== quote._id)
-        setListOfQuotes(newListOfQuotes)
-      }
-    }
-  }
-
   useEffect(() => {
     fetchAllQuotesFromDB()
   }, [])
@@ -91,20 +100,14 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
       <Modal hideModal={hideModal} isVisible={isModalVisible}>
         <>
           {isFormVisible ? (
-            <Form data={quoteToBeUpdated} onCancel={hideModal} onSave={handleOnSave} />
+            <Form
+              data={quoteToBeUpdated}
+              onCancel={hideModal}
+              onCreate={addNewQuoteToTheListOfQuotes}
+              onUpdate={updateAQuoteFromTheListOfQuotes}
+            />
           ) : (
-            <div id='author-info'>
-              {authorInfo && authorInfo.info ? (
-                <>
-                  <p>{authorInfo.author}</p>
-                  <p>{authorInfo.info}</p>
-                </>
-              ) : (
-                <>
-                  <p>Author info not found on wikipedia</p>
-                </>
-              )}
-            </div>
+            <AuthorInfo authorInfo={authorInfo} />
           )}
         </>
       </Modal>
@@ -117,7 +120,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
               id='search-author'
               name='searchAuthor'
               onChange={handleSearchQuoteByAuthor}
-              placeholder='Search by author...'
+              placeholder='Search by author name...'
               value={authorToBeSearched}
             />
           </div>
@@ -127,40 +130,13 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
             </button>
           </div>
         </div>
-        <table id='quotes-page-table'>
-          <thead>
-            <tr>
-              <th>Authors</th>
-              <th>Quotes</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {listOfQuotes.map(
-              (quote: IQuote, key: number): ReactElement => (
-                <tr key={key}>
-                  <td>{quote.author}</td>
-                  <td>{quote.quote}</td>
-                  <td>
-                    <span onClick={(): void => showUpdateQuoteForm(quote)} className='action-button edit-button'>
-                      <MdEdit />
-                    </span>
-                    <span
-                      onClick={(): Promise<void> => handleDeleteQuote(quote._id)}
-                      className='action-button delete-button'>
-                      <MdDeleteForever />
-                    </span>
-                    <span
-                      onClick={(): Promise<void> => showUserInfoModal(quote.author)}
-                      className='action-button user-info-button'>
-                      <MdPerson />
-                    </span>
-                  </td>
-                </tr>
-              ),
-            )}
-          </tbody>
-        </table>
+        <Table
+          quotes={sortedQuotes.length !== 0 ? sortedQuotes : listOfQuotes}
+          onDelete={removeDeletedQuoteFromQuotesList}
+          onEdit={showUpdateQuoteForm}
+          onSort={sortQuotes}
+          onViewUserInfo={showUserInfoModal}
+        />
       </div>
     </div>
   )

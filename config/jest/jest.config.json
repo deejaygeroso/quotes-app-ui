@@ -1,0 +1,17 @@
+{
+  "globals": {
+    "ts-jest": {
+      "tsconfig": "<rootDir>/config/tsconfig/tsconfig.json"
+    }
+  },
+  "rootDir": "../../",
+  "moduleNameMapper": {
+    "\\.(css|scss|less|jpg|jpeg|png|webp)$": "<rootDir>/config/jest/mockStyle.js"
+  },
+  "testEnvironment": "jsdom",
+  "testMatch": ["**/__tests__/**/*.+(ts|tsx|js)", "**/?(*.)+(spec|test).+(ts|tsx|js)"],
+  "transform": {
+    "^.+\\.(ts|tsx)$": "ts-jest"
+  },
+  "verbose": true
+}

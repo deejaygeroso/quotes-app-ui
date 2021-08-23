@@ -1,3 +1,106 @@
+@import '../../common/styles/mixins.scss';
+
 .modal-form {
   @include flexCenter(column);
+  background: white;
+  border-radius: var(--border-radius);
+  box-sizing: border-box;
+  height: 100%;
+  padding: var(--spacing-size-b) calc(var(--spacing-size-d) * 2) calc(var(--spacing-size-c) * 2);
+  width: 100%;
+
+  & > h1 {
+    color: var(--color-app);
+    margin: var(--spacing-size-d) 0;
+  }
+  & > div {
+    width: 100%;
+  }
+  & > div:nth-child(3) {
+    flex: 1;
+  }
+  & > div:last-child {
+    --buttons-section-height: 40px;
+    @include flex(row);
+    @include flexJustifyContent(flex-end);
+    height: var(--buttons-section-height);
+    padding: var(--spacing-size-d) 0 0 0;
+  }
+}
+
+.input-wrapper {
+  --input-padding: 12px 20px;
+  @include flex(column);
+
+  & > label {
+    padding: var(--spacing-size-c) 0 var(--spacing-size-a) 0;
+
+    & > span.error-message {
+      color: var(--color-danger);
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  & > input[type='text']#author-input {
+    box-sizing: border-box;
+    display: inline-block;
+    border: 2px solid var(--color-app);
+    border-radius: var(--border-radius);
+    font-family: var(--font-family);
+    font-size: var(--font-size-m);
+    padding: var(--input-padding);
+    width: 100%;
+
+    &.input-error {
+      border: 2px solid var(--color-danger);
+    }
+  }
+
+  & > textarea#quote-input {
+    border-radius: var(--border-radius);
+    border: 2px solid var(--color-app);
+    font-family: var(--font-family);
+    font-size: var(--font-size-m);
+    padding: var(--input-padding);
+    resize: none;
+
+    &.input-error {
+      border: 2px solid var(--color-danger);
+    }
+  }
+}
+
+.save-button {
+  --save-button-width: 75px;
+  background: var(--color-app);
+  border: 1px solid var(--color-app);
+  border-radius: var(--border-radius);
+  color: white;
+  cursor: pointer;
+  margin: 0 var(--spacing-size-a);
+  width: var(--save-button-width);
+
+  &:hover {
+    background: var(--color-app-hover);
+  }
+
+  &:disabled {
+    background: var(--color-disabled);
+    border: 1px solid var(--color-disabled);
+    color: white;
+    cursor: not-allowed;
+  }
+}
+
+.cancel-button {
+  border: none;
+  background: none;
+  color: var(--color-app);
+  cursor: pointer;
+  margin: 0 var(--spacing-size-c);
+
+  &:hover {
+    color: var(--color-app-hover);
+    text-decoration: underline;
+  }
 }
