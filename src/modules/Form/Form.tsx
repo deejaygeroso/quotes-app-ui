@@ -65,7 +65,7 @@ const Form = (props: IProps): ReactElement => {
 
   return (
     <div className='modal-form'>
-      <h1>Add Quote</h1>
+      <h1>{data ? 'Update' : 'Add'} Quote</h1>
       <div className='input-wrapper'>
         <label htmlFor='author-input'>Author Name:</label>
         <input
