@@ -1,8 +1,10 @@
 @import '../../common/styles/mixins.scss';
 
 .title {
+  --title-size: 35px;
   color: var(--color-app);
-  margin: var(--spacing-size-d) 0;
+  font-size: var(--title-size);
+  margin: var(--spacing-size-e) 0 var(--spacing-size-d) 0;
 }
 
 .quotes-page {
