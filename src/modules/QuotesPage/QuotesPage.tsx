@@ -129,6 +129,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
           </div>
         </div>
         <Table
+          quotes={listOfQuotes}
           onDelete={removeDeletedQuoteFromQuotesList}
           onEdit={showUpdateQuoteForm}
           onViewUserInfo={showUserInfoModal}
