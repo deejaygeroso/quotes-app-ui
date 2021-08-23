@@ -22,6 +22,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
 
   const hideModal = (): void => {
     setModalVisibility(false)
+    setAuthorInfo(null)
   }
 
   const showUpdateQuoteForm = (quoteChosenToBeUpdated: IQuote): void => {
@@ -37,10 +38,10 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
   }
 
   const showUserInfoModal = async (author: string): Promise<void> => {
-    setFormVisibility(false)
-    showModal()
     const authorInfoResult = await getAuthorInfo(author)
     setAuthorInfo(authorInfoResult)
+    setFormVisibility(false)
+    showModal()
   }
 
   const handleSearchQuoteByAuthor = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
@@ -50,37 +51,47 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
     setListOfQuotes(listOfQuotesSearched)
   }
 
-  const handleOnSave = (newSavedQuote: IQuote, isAnUpdateEvent: boolean): void => {
-    if (isAnUpdateEvent) {
-      const newListOfQuotes = listOfQuotes.map((quote: IQuote): IQuote => {
-        if (quote._id === newSavedQuote._id) {
-          return newSavedQuote
-        }
-        return quote
-      })
-      setListOfQuotes(newListOfQuotes)
-    } else {
-      const newListOfQuotes = [newSavedQuote, ...listOfQuotes]
-      setListOfQuotes(newListOfQuotes)
-    }
+  const updateAQuoteFromTheListOfQuotes = (newSavedQuote: IQuote): void => {
+    const newListOfQuotes = listOfQuotes.map((quote: IQuote): IQuote => {
+      if (quote._id === newSavedQuote._id) {
+        return newSavedQuote
+      }
+      return quote
+    })
+    setListOfQuotes(newListOfQuotes)
     hideModal()
   }
 
-  const fetchAllQuotesFromDB = async (): Promise<void> => {
-    const newListOfQuotes = await getAllQuotes()
+  const addNewQuoteToTheListOfQuotes = (newCreatedQuote: IQuote): void => {
+    const newListOfQuotes = [newCreatedQuote, ...listOfQuotes]
     setListOfQuotes(newListOfQuotes)
+    hideModal()
+  }
+
+  const handleOnSave = (newSavedQuote: IQuote, isAnUpdateEvent: boolean): void => {
+    if (isAnUpdateEvent) {
+      updateAQuoteFromTheListOfQuotes(newSavedQuote)
+    } else {
+      addNewQuoteToTheListOfQuotes(newSavedQuote)
+    }
   }
 
   const handleDeleteQuote = async (quoteId: string): Promise<void> => {
     if (confirm('Are you sure you want to delete this quote')) {
       const result: IDeleteQuoteResult = await deleteQuote(quoteId)
-      if (result.deletedCount === 1 && result.ok === 1) {
+      const isSuccessful = result.deletedCount === 1 && result.ok === 1
+
+      if (isSuccessful) {
         const newListOfQuotes = listOfQuotes.filter((quote: IQuote): boolean => quoteId !== quote._id)
         setListOfQuotes(newListOfQuotes)
       }
     }
   }
 
+  const fetchAllQuotesFromDB = async (): Promise<void> => {
+    const newListOfQuotes = await getAllQuotes()
+    setListOfQuotes(newListOfQuotes)
+  }
   useEffect(() => {
     fetchAllQuotesFromDB()
   }, [])
@@ -96,7 +107,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
             <div id='author-info'>
               {authorInfo && authorInfo.info ? (
                 <>
-                  <p>{authorInfo.author}</p>
+                  <h2>{authorInfo.author}</h2>
                   <p>{authorInfo.info}</p>
                 </>
               ) : (
@@ -117,7 +128,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
               id='search-author'
               name='searchAuthor'
               onChange={handleSearchQuoteByAuthor}
-              placeholder='Search by author...'
+              placeholder='Search by author name...'
               value={authorToBeSearched}
             />
           </div>
