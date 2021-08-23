@@ -5,7 +5,7 @@ import updateQuote from '../../api/updateQuote'
 import './index.scss'
 
 interface IProps {
-  data: IQuote
+  data?: IQuote
   onCancel: () => void
   onCreate: (quote: IQuote) => void
   onUpdate: (quote: IQuote) => void
