@@ -1,17 +1,7 @@
-# Dockerized React Hooks Application Boilerplate in Typescript
+# Quotes App UI
 
-A **React Boilerplate** that implements **hooks** and is written in **Typescript**.
-Application is configured with **docker** and is setup ready for production use.
-
-### Setup includes:
-
-- React v17
-- React Router Dom v5
-- Webpack v5
-- Typescript v4
-- Eslint
-- Prettier
-- Docker
+A simple application for saving your favorite quotes.
+![App Screenshot](https://github.com/deejaygeroso/quotes-app-ui/blob/ui-update/public/assets/images/screenshot.png)
 
 ### Required Setup
 
