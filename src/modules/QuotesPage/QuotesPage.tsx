@@ -1,6 +1,7 @@
 import { IAuthorInfoResult, IQuote, SortTypes } from '../../common/interfaces'
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react'
 import { getAllQuotes, getAuthorInfo, searchQuoteByAuthor } from '../../api'
+import AuthorInfo from '../AuthorInfo'
 import Form from '../Form'
 import Modal from '../Modal'
 import Table from '../Table/Table'
@@ -106,18 +107,7 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
               onUpdate={updateAQuoteFromTheListOfQuotes}
             />
           ) : (
-            <div id='author-info'>
-              {authorInfo && authorInfo.info ? (
-                <>
-                  <h2>{authorInfo.author}</h2>
-                  <p>{authorInfo.info}</p>
-                </>
-              ) : (
-                <>
-                  <p>Author info not found on wikipedia</p>
-                </>
-              )}
-            </div>
+            <AuthorInfo authorInfo={authorInfo} />
           )}
         </>
       </Modal>

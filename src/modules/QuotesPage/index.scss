@@ -62,11 +62,3 @@ input[type='text']#search-author {
     background: var(--add-button-color-hover);
   }
 }
-
-#author-info {
-  padding: var(--spacing-size-e);
-
-  & > h2 {
-    color: var(--color-app);
-  }
-}
