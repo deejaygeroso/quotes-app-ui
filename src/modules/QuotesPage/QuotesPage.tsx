@@ -1,9 +1,9 @@
-import { IAuthorInfoResult, IDeleteQuoteResult, IQuote } from '../../common/interfaces'
-import { MdDeleteForever, MdEdit, MdPerson } from 'react-icons/md'
+import { IAuthorInfoResult, IQuote } from '../../common/interfaces'
 import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react'
-import { deleteQuote, getAllQuotes, getAuthorInfo, searchQuoteByAuthor } from '../../api'
+import { getAllQuotes, getAuthorInfo, searchQuoteByAuthor } from '../../api'
 import Form from '../Form'
 import Modal from '../Modal'
+import Table from '../Table/Table'
 import './index.scss'
 
 const QuotesPage: FunctionComponent = (): ReactElement => {
@@ -76,16 +76,9 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
     }
   }
 
-  const handleDeleteQuote = async (quoteId: string): Promise<void> => {
-    if (confirm('Are you sure you want to delete this quote')) {
-      const result: IDeleteQuoteResult = await deleteQuote(quoteId)
-      const isSuccessful = result.deletedCount === 1 && result.ok === 1
-
-      if (isSuccessful) {
-        const newListOfQuotes = listOfQuotes.filter((quote: IQuote): boolean => quoteId !== quote._id)
-        setListOfQuotes(newListOfQuotes)
-      }
-    }
+  const removeDeletedQuoteFromQuotesList = async (quoteId: string): Promise<void> => {
+    const newListOfQuotes = listOfQuotes.filter((quote: IQuote): boolean => quoteId !== quote._id)
+    setListOfQuotes(newListOfQuotes)
   }
 
   const fetchAllQuotesFromDB = async (): Promise<void> => {
@@ -138,40 +131,11 @@ const QuotesPage: FunctionComponent = (): ReactElement => {
             </button>
           </div>
         </div>
-        <table id='quotes-page-table'>
-          <thead>
-            <tr>
-              <th>Authors</th>
-              <th>Quotes</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {listOfQuotes.map(
-              (quote: IQuote, key: number): ReactElement => (
-                <tr key={key}>
-                  <td>{quote.author}</td>
-                  <td>{quote.quote}</td>
-                  <td>
-                    <span onClick={(): void => showUpdateQuoteForm(quote)} className='action-button edit-button'>
-                      <MdEdit />
-                    </span>
-                    <span
-                      onClick={(): Promise<void> => handleDeleteQuote(quote._id)}
-                      className='action-button delete-button'>
-                      <MdDeleteForever />
-                    </span>
-                    <span
-                      onClick={(): Promise<void> => showUserInfoModal(quote.author)}
-                      className='action-button user-info-button'>
-                      <MdPerson />
-                    </span>
-                  </td>
-                </tr>
-              ),
-            )}
-          </tbody>
-        </table>
+        <Table
+          onDelete={removeDeletedQuoteFromQuotesList}
+          onEdit={showUpdateQuoteForm}
+          onViewUserInfo={showUserInfoModal}
+        />
       </div>
     </div>
   )
