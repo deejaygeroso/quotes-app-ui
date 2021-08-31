@@ -9,7 +9,7 @@ interface IBody {
 
 const createQuote = async (author: string, quote: string): Promise<IQuoteSaveResponse> => {
   const apiFetch = new ApiFetch()
-  return apiFetch.post<IQuoteSaveResponse, IBody>(`${apiRoutes.quotes}`, {
+  return apiFetch.post<IBody>(`${apiRoutes.quotes}`, {
     author,
     quote,
   })

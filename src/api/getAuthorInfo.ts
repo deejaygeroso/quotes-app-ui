@@ -8,7 +8,7 @@ interface IBody {
 
 const getAuthorInfo = async (author: string): Promise<IAuthorInfoResult> => {
   const apiFetch = new ApiFetch()
-  return apiFetch.post<IAuthorInfoResult, IBody>(apiRoutes.author, {
+  return apiFetch.post<IBody>(apiRoutes.author, {
     author,
   })
 }

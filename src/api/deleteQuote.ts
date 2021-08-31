@@ -4,7 +4,7 @@ import { apiRoutes } from '../common/constants'
 
 const deleteQuote = async (quoteId: string): Promise<IDeleteQuoteResult> => {
   const apiFetch = new ApiFetch()
-  return apiFetch.delete<IDeleteQuoteResult>(apiRoutes.quotes, quoteId)
+  return apiFetch.delete(apiRoutes.quotes, quoteId)
 }
 
 export default deleteQuote

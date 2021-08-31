@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IResolve } from '../interfaces'
 
@@ -14,20 +13,20 @@ class ApiFetch {
     put: 'PUT',
   }
 
-  public delete = async <Result>(apiRouteInput: string, idInput: string): Promise<Result> => {
+  public delete = async (apiRouteInput: string, idInput: string): Promise<any> => {
     const deleteApiRoute = `${apiRouteInput}/${idInput}`
     return this.apiCall(deleteApiRoute, {
       method: this.methods.delete,
     })
   }
 
-  public get = async <Result>(apiRouteInput: string): Promise<Result> => {
+  public get = async (apiRouteInput: string): Promise<any> => {
     return this.apiCall(apiRouteInput, {
       method: this.methods.get,
     })
   }
 
-  public post = async <Result, Body>(apiRouteInput: string, bodyInput: Body): Promise<Result> => {
+  public post = async <Body>(apiRouteInput: string, bodyInput: Body): Promise<any> => {
     return this.apiCall(apiRouteInput, {
       body: JSON.stringify({
         ...bodyInput,
@@ -36,7 +35,7 @@ class ApiFetch {
     })
   }
 
-  public put = async <Result, Body>(apiRouteInput: string, bodyInput: Body): Promise<Result> => {
+  public put = async <Body>(apiRouteInput: string, bodyInput: Body): Promise<any> => {
     return this.apiCall(apiRouteInput, {
       body: JSON.stringify({
         ...bodyInput,
@@ -45,11 +44,11 @@ class ApiFetch {
     })
   }
 
-  protected apiCall = async <Result, Body>(apiRouteInput: string, optionsInput: Body): Promise<Result> => {
+  protected apiCall = async <Body>(apiRouteInput: string, optionsInput: Body): Promise<any> => {
     const options = Object.assign({}, { headers: this.headers }, optionsInput)
-    return new Promise((resolve: IResolve<Result>): void => {
+    return new Promise((resolve: IResolve<any>): void => {
       fetch(`${apiRouteInput}`, options).then(async (response): Promise<void> => {
-        const result: Result = await response.json()
+        const result: any = await response.json()
         resolve(result)
       })
     })
