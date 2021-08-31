@@ -1,7 +1,8 @@
 # Quotes App UI
 
-A simple application for saving your favorite quotes.
-![App Screenshot](https://github.com/deejaygeroso/quotes-app-ui/blob/ui-update/public/assets/images/screenshot.png)
+A simple application for saving your favorite quotes.  
+  
+[![App Video](https://img.youtube.com/vi/Im0mZ-gaVMA/0.jpg)](https://www.youtube.com/watch?v=Im0mZ-gaVMA)
 
 ### Required Setup
 
