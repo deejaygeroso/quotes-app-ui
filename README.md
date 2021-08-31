@@ -1,6 +1,7 @@
 # Quotes App UI
 
-A simple application for saving your favorite quotes.
+A simple application for saving your favorite quotes.  
+  
 [![App Video](https://img.youtube.com/vi/Im0mZ-gaVMA/0.jpg)](https://www.youtube.com/watch?v=Im0mZ-gaVMA)
 
 ### Required Setup
