@@ -44,6 +44,8 @@ const Form = (props: IProps): ReactElement => {
   const clearForm = (): void => {
     setAuthor('')
     setQuote('')
+    setAuthorError(false)
+    setQuoteError(false)
   }
 
   const updateQuoteFromDB = async (quoteId: string): Promise<void> => {
